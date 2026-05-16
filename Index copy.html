@@ -673,15 +673,6 @@
 
     <div class="pin-error" id="pin-error"></div>
 
-    <div id="user-list-section" class="user-list">
-      <div class="user-list-title">Profiles</div>
-      <div id="user-chips"></div>
-    </div>
-
-    <button class="btn btn-primary btn-sm" style="margin-top:0.75rem; width:100%;" onclick="backupData()">Backup data</button>
-    <button class="btn btn-secondary btn-sm" style="margin-top:0.5rem; width:100%;" onclick="document.getElementById('backup-file-input').click()">Restore backup</button>
-    <input type="file" id="backup-file-input" accept=".json" style="display:none" onchange="restoreBackup(event)">
-
     <div class="storage-warning" id="storage-warning" style="display:none; margin-top:1rem; padding:1rem; border-radius:12px; border:1px solid rgba(0,212,255,0.2); background: rgba(0,212,255,0.08); color: var(--text2);"> 
       <div class="icon" style="font-size:1.2rem; margin-bottom:0.5rem;">⚠️</div>
       <p style="margin:0 0 0.75rem; font-size:0.9rem;">Local save is blocked in this view. Open this page in Safari for full support.</p>
@@ -1194,8 +1185,6 @@ function renderPinScreen() {
     }
   }
 
-  const section = document.getElementById('user-list-section');
-  const chips = document.getElementById('user-chips');
   const safariBanner = document.getElementById('safari-app-banner');
   pinBuffer = '';
   updatePinDots();
@@ -1203,18 +1192,13 @@ function renderPinScreen() {
     safariBanner.style.display = isIOS() ? 'block' : 'none';
   }
 
-  if (userIds.length > 0 && section && chips) {
-    section.style.display = 'block';
-    chips.innerHTML = userIds.map(id => {
-      const u = data.users[id];
-      return `<span class="user-chip" onclick="selectUserChip('${id}')">
-        <span class="avatar">${u.name[0].toUpperCase()}</span>${u.name}
-        <button class="user-chip-del" onclick="deleteUser('${id}', event)" title="Delete">✕</button>
-      </span>`;
-    }).join('');
-  } else if (section) {
-    section.style.display = 'none';
+  const subtitle = document.getElementById('pin-card-subtitle');
+  if (userIds.length === 0) {
+    subtitle.textContent = 'No profiles found. Create one to get started.';
+  } else {
+    subtitle.textContent = 'Enter your 4-digit PIN to access your profile.';
   }
+
   const warning = document.getElementById('storage-warning');
   if (warning) {
     warning.style.display = storageAvailable ? 'none' : 'block';
