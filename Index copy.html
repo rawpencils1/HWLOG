@@ -673,12 +673,6 @@
 
     <div class="pin-error" id="pin-error"></div>
 
-    <div class="storage-warning" id="storage-warning" style="display:none; margin-top:1rem; padding:1rem; border-radius:12px; border:1px solid rgba(0,212,255,0.2); background: rgba(0,212,255,0.08); color: var(--text2);"> 
-      <div class="icon" style="font-size:1.2rem; margin-bottom:0.5rem;">⚠️</div>
-      <p style="margin:0 0 0.75rem; font-size:0.9rem;">Local save is blocked in this view. Open this page in Safari for full support.</p>
-      <button class="btn btn-primary btn-sm" onclick="openInSafari()">Open in Safari</button>
-    </div>
-
     <button class="create-user-btn" onclick="showCreateUser()">+ Create new profile</button>
     <button class="btn btn-secondary btn-sm" style="margin-top:0.75rem; width:100%;" onclick="resetAppData()">Reset app data</button>
   </div>
@@ -689,10 +683,6 @@
   <header class="app-header">
     <div>
       <div class="app-logo">H.W. Log</div>
-      <div id="safari-app-banner" style="display:none; margin-top:0.5rem; font-size:0.85rem; color: var(--text3);">
-        <button class="btn btn-secondary btn-sm" onclick="openInSafari()">Open in Safari</button>
-        <span style="margin-left:0.75rem;">If you are on iPhone, open the app in Safari for best results.</span>
-      </div>
     </div>
     <div class="user-badge">
       <span class="name" id="header-username"></span>
@@ -1185,12 +1175,8 @@ function renderPinScreen() {
     }
   }
 
-  const safariBanner = document.getElementById('safari-app-banner');
   pinBuffer = '';
   updatePinDots();
-  if (safariBanner) {
-    safariBanner.style.display = isIOS() ? 'block' : 'none';
-  }
 
   const subtitle = document.getElementById('pin-card-subtitle');
   if (userIds.length === 0) {
@@ -1232,18 +1218,6 @@ function isIOS() {
   const ua = navigator.userAgent || navigator.vendor || window.opera;
   return /iPad|iPhone|iPod/.test(ua) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-}
-
-function openInSafari() {
-  const url = window.location.href;
-  if (isIOS()) {
-    window.open(url, '_blank');
-    setTimeout(() => {
-      alert('If Safari did not open automatically, please open Safari and paste this URL or locate the file in Files:\n' + url);
-    }, 400);
-  } else {
-    window.open(url, '_blank');
-  }
 }
 
 function resetAppData() {
